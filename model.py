@@ -22,9 +22,9 @@ class ViT_Reconstruction_Model(nn.Module):
                  encoder_embed_dim: int = 768,
                  encoder_depth: int = 12,
                  encoder_num_heads: int = 12,
-                 decoder_embed_dim: int = 512,
-                 decoder_depth: int = 8,
-                 decoder_num_heads: int = 8,
+                 decoder_embed_dim: int = 256,
+                 decoder_depth: int = 4,
+                 decoder_num_heads: int = 4,
                  mlp_ratio: float = 4.,
                  qkv_bias: bool = True,
                  drop_rate: float = 0.,
@@ -32,7 +32,7 @@ class ViT_Reconstruction_Model(nn.Module):
                  norm_layer=nn.LayerNorm,
                  init_values: float = 0.0,
                  use_learnable_pos_emb: bool = False,
-                 quantizer_dim: int = 32,
+                 quantizer_dim: int = 256,
                  bits_for_quantizer: int = 8,
                  quantizer_commitment_cost: float = 0.25,
                  **kwargs):
@@ -100,9 +100,9 @@ class ViT_Reconstruction_Model(nn.Module):
                 bm_pos: torch.Tensor = None,
                 targets=None, # Not used by this specific forward for reconstruction
                 _eval: bool = False,
-                eval_snr_db: float = 10.0,
-                train_snr_db_min: float = -5.0,
-                train_snr_db_max: float = 20.0,
+                eval_snr_db: float = 30.0,
+                train_snr_db_min: float = 30,
+                train_snr_db_max: float = 30.0,
                 **kwargs # Catch any other unexpected kwargs
                ) -> Dict[str, torch.Tensor]:
 
@@ -157,7 +157,7 @@ def ViT_Reconstruction_Model_Default(pretrained: bool = False, **kwargs) -> ViT_
         encoder_embed_dim=384, encoder_depth=6, encoder_num_heads=6,
         decoder_embed_dim=192, decoder_depth=3, decoder_num_heads=3,
         mlp_ratio=4.0, qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6),
-        quantizer_dim=64, bits_for_quantizer=8, quantizer_commitment_cost=0.25,
+        quantizer_dim=256, bits_for_quantizer=8, quantizer_commitment_cost=0.25,
         init_values=0.0, use_learnable_pos_emb=False,
         drop_rate=0.0, drop_path_rate=0.1
     )
